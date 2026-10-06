@@ -6,10 +6,10 @@ département **Sciences du numérique**.
 Ce dépôt rassemble les ressources accessibles aux étudiants :
 
 - [polycopié du cours](cours/README.md) ;
+- [sujets de travaux dirigés](td/README.md) ;
 - [examens](examens/README.md).
 
-Les sujets de travaux dirigés et les slides des chapitres seront ajoutés
-prochainement.
+Les slides des chapitres seront ajoutées prochainement.
 
 ## Cloner et mettre à jour le dépôt
 
@@ -40,6 +40,7 @@ conservés dans le dépôt enseignant.
 | Répertoire | Contenu |
 |---|---|
 | [`cours/`](cours/) | Polycopié du cours |
+| [`td/`](td/) | Sujets des travaux dirigés |
 | [`examens/`](examens/) | Sujets d'examen classés par année universitaire |
 
 ## Signaler une erreur
