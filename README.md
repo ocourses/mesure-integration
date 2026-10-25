@@ -7,7 +7,9 @@ Ce dépôt rassemble les ressources accessibles aux étudiants :
 
 - [polycopié du cours](cours/README.md) ;
 - [sujets de travaux dirigés](td/README.md) ;
-- [examens](examens/README.md).
+- [examens](examens/README.md) ;
+- [site web du cours](https://ocourses.github.io/mesure-integration/) :
+  illustrations interactives du polycopié et des TD ([documentation](site/README.md)).
 
 Les slides des chapitres seront ajoutées prochainement.
 
@@ -42,6 +44,7 @@ conservés dans le dépôt enseignant.
 | [`cours/`](cours/) | Polycopié du cours |
 | [`td/`](td/) | Sujets des travaux dirigés |
 | [`examens/`](examens/) | Sujets d'examen classés par année universitaire |
+| [`site/`](site/) | Site web du cours (illustrations interactives), publié sur GitHub Pages |
 
 ## Signaler une erreur
 
