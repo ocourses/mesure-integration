@@ -9,11 +9,11 @@
 //     dérivable en tout t > 0 (a < t < b). Que F' tende vers −∞ en 0⁺ vient
 //     d'un autre argument (convergence monotone), pas de la domination.
 
-import { latexNombreFinal, latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
+import { latexNombreFinal, latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, toile, verdict } from './commun.js';
 import { aire, integrale, traceFonction } from './fonctions.js';
 
 export const T_MAX = 4;
@@ -105,7 +105,7 @@ export default {
     const canvasF = toile(cF, '1 / 1', () => dessine());
     canvasF.classList.add('cliquable');
     const repF = new Repere(canvasF, { x: [0, T_MAX], y: [-3, 2] });
-    const texteF = paragraphe(cF, '', 'verdict');
+    const texteF = verdict(cF, '');
     glisse(canvasF, repF, {
       deplace: (t) => {
         outils.change({ t: Math.round(Math.min(T_MAX, Math.max(0, t)) * 100) / 100 });
@@ -124,7 +124,7 @@ export default {
     ]);
     const canvasI = toile(cI, '1 / 1', () => dessine());
     const repI = new Repere(canvasI, { x: [0, 8], y: [0, 1.1] });
-    const texteI = paragraphe(cI, '', 'verdict');
+    const texteI = verdict(cI, '');
 
     // F et F' sont gardées sur une grille de t.
     const ts = Array.from({ length: 161 }, (_, i) => (T_MAX * i) / 160);

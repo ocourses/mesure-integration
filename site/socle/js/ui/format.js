@@ -170,3 +170,17 @@ export function polynomeLatex(c) {
   });
   return s.trim() || '0';
 }
+
+// Nombre en LaTeX, en notation scientifique (1{,}23 \cdot 10^{-5}) s'il est
+// très petit ou très grand, sinon à `chiffres` chiffres significatifs.
+export function latexScientifique(v, chiffres = 3) {
+  if (!Number.isFinite(v)) return v > 0 ? '+\\infty' : v < 0 ? '-\\infty' : '\\text{—}';
+  const a = Math.abs(v);
+  if (a === 0 || (a >= 1e-3 && a < 1e5)) return latexNombre(v, chiffres);
+  const e = Math.floor(Math.log10(a));
+  let m = v / 10 ** e;
+  // L'arrondi peut donner 10 : on passe à la puissance suivante.
+  if (Math.abs(Number(m.toPrecision(chiffres))) >= 10) return latexScientifique(Math.sign(v) * 10 ** (e + 1), chiffres);
+  m = Number(m.toPrecision(chiffres));
+  return `${latexNombre(m, chiffres)} \\cdot 10^{${e}}`;
+}

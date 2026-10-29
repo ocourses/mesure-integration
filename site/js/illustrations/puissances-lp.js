@@ -3,10 +3,10 @@
 // |f|^p = x^{−ap} est intégrable près de 0 si ap < 1, à l'infini si ap > 1.
 // Le point se colle exactement à l'hyperbole ap = 1, frontière des deux régimes.
 
-import { latexNombre, latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
+import { latexNombre, latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile, verdict } from './commun.js';
 import { aire, traceFonction } from './fonctions.js';
 
 export const DOMAINES = {
@@ -106,7 +106,7 @@ export default {
     const canvasP = toile(cP, '1 / 1', () => dessine());
     canvasP.classList.add('cliquable');
     const repP = new Repere(canvasP, { x: [0, 3], y: [0, 4] });
-    const verdict = paragraphe(cP, '', 'verdict');
+    const texteVerdict = verdict(cP, '');
     glisse(canvasP, repP, {
       deplace: (a, p) => {
         outils.change(pointDuPlan(a, p, 8 / repP.sx, 8 / repP.sy));
@@ -147,9 +147,9 @@ export default {
         repP.trace(hyp, { couleur: col.equilibre, largeur: 2 });
         repP.point(a, p, { rayon: 6, couleur: col.perturbation });
       }
-      verdict.className = `verdict ${dansLp ? 'ok' : 'alerte'}`;
+      texteVerdict.className = `verdict ${dansLp ? 'ok' : 'alerte'}`;
       outils.rendTexte(
-        verdict,
+        texteVerdict,
         `$a = ${nb(a, 2, 1)}$, $p = ${nb(p, 2, 1)}$, $ap = ${nb(s, 2, 1)}$ : $x^{-a} ${dansLp ? '\\in' : '\\notin'} L^{p}(${LATEX_DOMAINE[r.domaine]})$.`,
       );
 
@@ -170,13 +170,16 @@ export default {
           : `$\\int x^{-ap}\\,\\mathrm dx = +\\infty$${r.domaine === 'tout' ? ' : sur $\\mathopen{]}0, 1]$ ou sur $[1, +\\infty\\mathclose{[}$, l’intégrale diverge toujours.' : s === 1 ? ' : de justesse, $\\int x^{-1}\\,\\mathrm dx$ est un logarithme.' : '.'}`,
       );
       const e = exposantsPermis(r.domaine, a);
+      // WEB5 : `a` est suivi de la phrase et varie dans une plage connue,
+      // [0,05 ; 3] : virgule fixe, comme dans le verdict. La borne finit la
+      // phrase, rien ne la suit : sa forme la plus courte ne fait rien bouger.
       outils.rendTexte(
         permis,
         e === null
-          ? `Pour $a = ${latexNombre(a)}$, aucun $p$ ne convient.`
+          ? `Pour $a = ${nb(a, 2)}$, aucun $p$ ne convient.`
           : e.max === Infinity
-            ? `Pour $a = ${latexNombre(a)}$ : $x^{-a} \\in L^p$ pour $p > ${latexNombre(e.min, 3)}$.`
-            : `Pour $a = ${latexNombre(a)}$ : $x^{-a} \\in L^p$ pour $0 < p < ${latexNombre(e.max, 3)}$.`,
+            ? `Pour $a = ${nb(a, 2)}$ : $x^{-a} \\in L^p$ pour $p > ${latexNombre(e.min, 3)}$.`
+            : `Pour $a = ${nb(a, 2)}$ : $x^{-a} \\in L^p$ pour $0 < p < ${latexNombre(e.max, 3)}$.`,
       );
     }
 

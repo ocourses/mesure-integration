@@ -7,11 +7,14 @@
 // prepare() ajuste le canevas à sa taille affichée et efface ; il faut
 // l'appeler au début de chaque dessin.
 
+import { ajusteCanevas } from './canevas.js';
 import { etiquettesAxe } from './format.js';
 import { couleurs } from './theme.js';
 
-// Graduations régulières « rondes » couvrant [a, b], une tous les 50 px environ.
+// Graduations régulières « rondes » couvrant [a, b], une tous les `espacement` px
+// environ ; aucune si l'intervalle est vide ou à l'envers.
 export function graduations(a, b, longueurPx, espacement = 55) {
+  if (!(b > a)) return [];
   const n = Math.max(2, Math.floor(longueurPx / espacement));
   const brut = (b - a) / n;
   const p = 10 ** Math.floor(Math.log10(brut));
@@ -72,15 +75,8 @@ export class Repere {
   // Taille, échelle et cadre effectif ; efface le canevas. Renvoie false si le
   // canevas est masqué (taille nulle).
   prepare() {
-    const rect = this.canvas.getBoundingClientRect();
-    if (rect.width < 2 || rect.height < 2) return false;
-    const dpr = window.devicePixelRatio || 1;
-    const w = Math.round(rect.width * dpr);
-    const h = Math.round(rect.height * dpr);
-    if (this.canvas.width !== w || this.canvas.height !== h) {
-      this.canvas.width = w;
-      this.canvas.height = h;
-    }
+    const rect = ajusteCanevas(this.canvas, this.ctx);
+    if (!rect) return false;
     this.rect = rect;
     this.col = couleurs();
     const m = this.marges;
@@ -100,9 +96,6 @@ export class Repere {
     this.sy = H / (y1 - y0);
     this.L = L;
     this.H = H;
-    const ctx = this.ctx;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, rect.width, rect.height);
     return true;
   }
 
@@ -280,7 +273,7 @@ export class Repere {
   }
 
   // Champ de vecteurs normalisé : de petites flèches de longueur fixe sur une grille.
-  champ(f, { n = 17, couleur = this.col.grilleForte ?? this.col.discret, longueur = 0.6 } = {}) {
+  champ(f, { n = 17, couleur = this.col.discret, longueur = 0.6 } = {}) {
     const ctx = this.ctx;
     const { x: [a, b], y: [c, d] } = this.cadre;
     const pasPx = this.L / n;
@@ -321,7 +314,6 @@ export class Repere {
     ctx.restore();
   }
 
-  // Texte en coordonnées du monde, décalé de (dx, dy) pixels.
   // Texte au point (x, y) décalé de (dx, dy) px ; avec `fond`, sur un aplat de
   // la couleur du fond, pour rester lisible par-dessus les courbes.
   texte(x, y, chaine, { couleur = this.col.trait, align = 'left', dx = 0, dy = 0, police = '12px system-ui, sans-serif', fond = false } = {}) {

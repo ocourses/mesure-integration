@@ -1,7 +1,7 @@
 // Couverture du glossaire : chaque terme du poly employé dans « Ce que dit le
 // cours » ou « À essayer » d'une page est déclaré dans ses `termes`, pour être
 // souligné avec sa définition en infobulle ; et chaque terme déclaré apparaît.
-// On simule le gabarit (js/ui/infobulle.js, `souligne`) : texte hors formules
+// On simule le socle (socle/js/ui/infobulle.js, `souligne`) : texte hors formules
 // $…$, mots entiers, termes les plus longs d'abord, sans chevauchement.
 
 import { test } from 'node:test';

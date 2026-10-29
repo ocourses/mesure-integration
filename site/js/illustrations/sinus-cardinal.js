@@ -3,11 +3,11 @@
 // tend vers +∞ : f n'est pas intégrable au sens de Lebesgue, et f⁺, f⁻ ont toutes
 // deux une intégrale infinie. On fait glisser la borne t.
 
-import { latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { boutonInfo, carte, glisse, legende, paragraphe, toile } from './commun.js';
+import { latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { boutonInfo, carte, glisse, legende, toile, verdict } from './commun.js';
 import { aire, traceFonction } from './fonctions.js';
 
 export const T_MAX = 200;
@@ -99,13 +99,13 @@ export default {
     const cI = carte(grille, '$t \\mapsto \\int_1^t f$ : semi-convergente');
     const canvasI = toile(cI, '16 / 7', () => dessine());
     const repI = new Repere(canvasI, { x: [1, T_MAX], y: [0, 1] });
-    const texteI = paragraphe(cI, '', 'verdict');
+    const texteI = verdict(cI, '');
     const cP = carte(grille, '$t \\mapsto \\int_1^t f^+$ et $\\int_1^t f^-$ : infinies');
     const canvasP = toile(cP, '16 / 7', () => dessine());
     const repP = new Repere(canvasP, { x: [1, T_MAX], y: [0, 2.5] });
     const zoneLegende = document.createElement('div');
     cP.appendChild(zoneLegende);
-    const texteP = paragraphe(cP, '', 'verdict');
+    const texteP = verdict(cP, '');
 
     const courbe = (cle, n = 600) =>
       Array.from({ length: n + 1 }, (_, i) => {

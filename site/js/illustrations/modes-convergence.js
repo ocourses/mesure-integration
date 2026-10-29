@@ -4,15 +4,15 @@
 // écrire (Exemple A.3.1) tend vers 0 dans L¹ et ne converge en aucun point ;
 // sa sous-suite f_{2^m} converge presque partout.
 
-import { latexPositifFixe, latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { axesLog, barreOutils, boutonInfo, carte, choisitIndice, choixEchelle, choixRadios, echelleLog, glisse, paragraphe, tableau, toile } from './commun.js';
+import { latexPositifFixe, latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { axesLog, barreOutils, boutonInfo, carte, choisitIndice, choixEchelle, choixRadios, echelleLog, glisse, paragraphe, tableau, toile, verdict } from './commun.js';
 export { echelleLog };
 import { aire, grilleUnites, traceFonction } from './fonctions.js';
 import { GLOSSAIRE } from './glossaire.js';
-import { fermeInfobulle } from '../ui/infobulle.js';
+import { fermeInfobulle } from '../../socle/js/ui/infobulle.js';
 
 export const N_MAX = 64;
 
@@ -187,11 +187,11 @@ export default {
     ]);
     const canvasX = toile(cX, '16 / 6', () => dessine());
     const repX = new Repere(canvasX, { x: [0, N_MAX + 1], y: [0, 1.2] });
-    const texteX = paragraphe(cX, '', 'verdict');
+    const texteX = verdict(cX, '');
     const cN = carte(grille, 'La suite $n \\mapsto \\|f_n\\|_1$');
     const canvasN = toile(cN, '16 / 6', () => dessine());
     const repN = new Repere(canvasN, { x: [0, N_MAX + 1], y: [0, 1.2] });
-    const texteN = paragraphe(cN, '', 'verdict');
+    const texteN = verdict(cN, '');
     for (const [canvas, rep] of [[canvasX, repX], [canvasN, repN]]) {
       choisitIndice(canvas, rep, {
         max: () => N_MAX,

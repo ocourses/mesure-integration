@@ -5,11 +5,11 @@
 // et le procédé de Riemann réordonne les termes pour que la série converge vers
 // c ; pour une série absolument convergente, il échoue.
 
-import { latexNombre, latexNombreFixe } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, legende, paragraphe, toile } from './commun.js';
+import { latexNombre, latexNombreFixe } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, legende, paragraphe, toile, verdict } from './commun.js';
 
 // Équivalents en +∞ des sommes partielles de u⁺ et de u⁻ (série harmonique
 // alternée) : ½ ln N + ½ ln 2 + γ/2 et ½ ln N − ½ ln 2 + γ/2.
@@ -142,7 +142,7 @@ export default {
     const canvasS = toile(cS, '16 / 6', () => dessine());
     canvasS.classList.add('saisissable');
     const repS = new Repere(canvasS, { x: [0, 200], y: [-2, 3] });
-    const verdict = paragraphe(cS, '', 'verdict');
+    const texteVerdict = verdict(cS, '');
     glisse(canvasS, repS, {
       deplace: (_, y) => {
         outils.change({ c: Math.round(Math.min(2.5, Math.max(-1.8, y)) * 100) / 100 });
@@ -167,7 +167,7 @@ export default {
     const repP = new Repere(canvasP, { x: [0, 100], y: [0, 4] });
     const zoneLegende = document.createElement('div');
     cP.appendChild(zoneLegende);
-    const noteP = paragraphe(cP, '', 'verdict');
+    const noteP = verdict(cP, '');
 
     function dessine() {
       const col = couleurs();
@@ -186,9 +186,9 @@ export default {
         repS.texte(K, r.c, `c = ${String(r.c).replace('.', ',').replace('-', '−')}`, { align: 'right', dx: -4, dy: -6, couleur: col.perturbation, fond: true, police: '600 12px system-ui, sans-serif' });
       }
       const bloque = issueProcede(r.serie, r.c) === 'bloque';
-      verdict.className = `verdict ${bloque ? 'alerte' : 'ok'}`;
+      texteVerdict.className = `verdict ${bloque ? 'alerte' : 'ok'}`;
       outils.rendTexte(
-        verdict,
+        texteVerdict,
         `Après $K = ${K}$ termes : ${positifs} positif${positifs > 1 ? 's' : ''} et ${negatifs} négatif${negatifs > 1 ? 's' : ''} utilisés, somme $${latexNombreFixe(sommes[K - 1], 3)}$. ` +
           (bloque
             ? `La série converge absolument : $\\sum u_n^+$ et $\\sum u_n^-$ sont finies. Les termes restants d’un signe finissent par ne plus suffire à franchir $c$, et le procédé reste bloqué de ce côté : ce n’est pas un réordonnement. Toute réorganisation a pour somme $${S.latexSomme}$.`

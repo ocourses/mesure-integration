@@ -10,11 +10,11 @@
 // « Est-ce une tribu ? » : on coche des parties, et la page dit quel axiome
 // manque, avec les parties en cause.
 
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { barreOutils, boutonAide, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
-import { champ } from '../ui/controls.js';
-import { fermeInfobulle } from '../ui/infobulle.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { barreOutils, boutonAide, boutonInfo, carte, choixRadios, glisse, paragraphe, toile, verdict } from './commun.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { fermeInfobulle } from '../../socle/js/ui/infobulle.js';
 import { atomes, cardinal, complementaire, engendree, etape, latexFamille, latexPartie, NOMS_1, plein, verifieTribu } from './ensembles.js';
 
 export const N = 5;
@@ -158,7 +158,7 @@ export default {
     const blocF = document.createElement('div');
     cF.appendChild(blocF);
     const lignesF = [0, 1, 2].map(() => paragraphe(blocF, '', ''));
-    const verdict = paragraphe(cF, '', 'verdict');
+    const texteVerdict = verdict(cF, '');
     const cJ = carte(grille, 'Pourquoi');
     boutonAide(cJ, { titre: 'Construire les familles Fₖ', etiquette: 'Comment on construit les familles F_k' }, (div) => explique(div, outils.rendTexte));
     const lignesJ = [0, 1].map(() => paragraphe(cJ, '', ''));
@@ -296,9 +296,9 @@ export default {
               ? `Ajoutées à l’étape ${k} : $${ajoutees.slice(0, 4).map(p).join(',\\ ')}$${ajoutees.length > 4 ? ` et ${ajoutees.length - 4} autres` : ''}.`
               : `Rien n’est ajouté à l’étape ${k}.`,
         ]);
-        verdict.className = `verdict ${stable ? 'ok' : ''}`;
+        texteVerdict.className = `verdict ${stable ? 'ok' : ''}`;
         outils.rendTexte(
-          verdict,
+          texteVerdict,
           !C.length
             ? '$\\sigma(\\emptyset) = \\{\\emptyset, E\\}$, la tribu grossière : elle ne s’obtient pas en ajoutant des parties à une famille vide.'
             : stable
@@ -315,7 +315,7 @@ export default {
           `La plus petite tribu qui la contient, $\\sigma(\\mathcal F)$, a ${nAtomes} atome${nAtomes > 1 ? 's' : ''} et ${sigma.length} parties.`,
           '',
         ]);
-        verdict.className = `verdict ${test.tribu ? 'ok' : 'alerte'}`;
+        texteVerdict.className = `verdict ${test.tribu ? 'ok' : 'alerte'}`;
         const texte = test.tribu
           ? `C’est une tribu : elle contient $E$, et elle est stable par complémentaire et par réunion. Elle a ${nAtomes} atome${nAtomes > 1 ? 's' : ''}.`
           : test.axiome === 'plein'
@@ -323,7 +323,7 @@ export default {
             : test.axiome === 'complementaire'
               ? `Ce n’est pas une tribu : $A = ${p(test.A)}$ est dans la famille, mais pas son complémentaire $A^c = ${p(complementaire(test.A, N))}$.`
               : `Ce n’est pas une tribu : $A = ${p(test.A)}$ et $B = ${p(test.B)}$ sont dans la famille, mais pas $A \\cup B = ${p(test.A | test.B)}$.`;
-        outils.rendTexte(verdict, texte);
+        outils.rendTexte(texteVerdict, texte);
         ecrisJustification([
           'Sur un ensemble fini, une famille n’a qu’un nombre fini de membres : la stabilité par réunion dénombrable se réduit à la stabilité par réunion de deux parties.',
           'Chaque partie est en face de son complémentaire : la figure d’une tribu est symétrique par rapport à l’axe.',

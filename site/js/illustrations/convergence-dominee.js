@@ -5,14 +5,14 @@
 // G_N = max_{k ≤ N} |f_k| et son intégrale quand N grandit, et l'on peut
 // proposer sa propre dominante g(x) = C / (1 + x)^α.
 
-import { latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { axesLog, barreOutils, boutonInfo, carte, choisitIndice, choixEchelle, choixRadios, echelleLog, paragraphe, toile } from './commun.js';
+import { latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { axesLog, barreOutils, boutonInfo, carte, choisitIndice, choixEchelle, choixRadios, echelleLog, paragraphe, toile, verdict } from './commun.js';
 import { aire, grilleUnites, integrale, traceFonction } from './fonctions.js';
 import { GLOSSAIRE } from './glossaire.js';
-import { fermeInfobulle } from '../ui/infobulle.js';
+import { fermeInfobulle } from '../../socle/js/ui/infobulle.js';
 
 export const N_MAX = 30;
 
@@ -215,7 +215,7 @@ export default {
     bloc.className = 'texte-fixe';
     cG.appendChild(bloc);
     const commentaire = paragraphe(bloc, '', '');
-    const verdictG = paragraphe(cG, '', 'verdict');
+    const verdictG = verdict(cG, '');
 
     // ---- Intégrales --------------------------------------------------------------------------
     const grilleCartes = document.createElement('div');
@@ -229,7 +229,7 @@ export default {
     ]);
     const canvasI = toile(cI, '16 / 6', () => dessine());
     const repI = new Repere(canvasI, { x: [0, N_MAX + 1], y: [0, 1.2] });
-    const texteI = paragraphe(cI, '', 'verdict');
+    const texteI = verdict(cI, '');
     choisitIndice(canvasI, repI, {
       max: () => N_MAX,
       change: (n) => {
@@ -240,7 +240,7 @@ export default {
     const cE = carte(grilleCartes, '$N \\mapsto \\int G_N$, l’enveloppe');
     const canvasE = toile(cE, '16 / 6', () => dessine());
     const repE = new Repere(canvasE, { x: [0, N_MAX + 1], y: [0, 2] });
-    const texteE = paragraphe(cE, '', 'verdict');
+    const texteE = verdict(cE, '');
 
     // Calculs gardés par suite.
     const cache = {};

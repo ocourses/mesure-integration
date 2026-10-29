@@ -5,11 +5,11 @@
 //   - l'ensemble de Cantor, non dénombrable, dont les étapes C_n ont pour
 //     mesure (2/3)^n. Un point cliqué montre son développement en base 3.
 
-import { latexNombre, latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile, zoomable } from './commun.js';
+import { latexNombre, latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile, verdict, zoomable } from './commun.js';
 import { rationnels } from './suites-trompeuses.js';
 
 // ---- ℚ ∩ [0, 1] ----------------------------------------------------------------------
@@ -182,7 +182,7 @@ export default {
     bloc.className = 'bloc-maths';
     c.appendChild(bloc);
     const mesures = paragraphe(bloc, '', '');
-    const point = paragraphe(bloc, '', 'verdict');
+    const point = verdict(bloc, '');
 
     glisse(canvas, rep, {
       deplace: (x) => {

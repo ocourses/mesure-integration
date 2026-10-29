@@ -8,12 +8,12 @@
 // Le dernier exemple, hors du poly, montre que les deux ordres peuvent différer
 // quand f n'est pas intégrable.
 
-import { etiquettesAxe, latexNombreFinal, latexPositifFixe } from '../ui/format.js';
+import { etiquettesAxe, latexNombreFinal, latexPositifFixe } from '../../socle/js/ui/format.js';
 
 const pos = (v) => latexPositifFixe(v, 2, 1);
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile, verdict } from './commun.js';
 import { aire, traceFonction } from './fonctions.js';
 
 export const FONCTIONS = {
@@ -182,7 +182,7 @@ export default {
     canvasP.classList.add('cliquable');
     const repP = new Repere(canvasP, { x: [0, 1], y: [0, 1] });
     glisse(canvasP, repP, { deplace: (x) => changeS(x) });
-    const verdict = paragraphe(cT, '', 'verdict');
+    const texteVerdict = verdict(cT, '');
 
     // Grille du produit, un trait tous les F.pas, par-dessus les aplats.
     function grilleProduit(F, col) {
@@ -500,9 +500,9 @@ export default {
         });
       }
       const egal = Math.abs(F.totalPhi - F.totalPsi) < 1e-12;
-      verdict.className = `verdict ${egal ? 'ok' : 'alerte'}`;
+      texteVerdict.className = `verdict ${egal ? 'ok' : 'alerte'}`;
       outils.rendTexte(
-        verdict,
+        texteVerdict,
         egal
           ? `$\\int \\phi = \\int \\psi = ${F.latexTotal} \\approx ${latexNombreFinal(F.totalPhi, 4)}$ : les deux ordres donnent l’intégrale double.`
           : `$\\int_0^1 \\phi = \\pi/4$ mais $\\int_0^1 \\psi = -\\pi/4$ : les deux ordres diffèrent. Ici $\\int |f| = +\\infty$, et Fubini ne s’applique pas.`,

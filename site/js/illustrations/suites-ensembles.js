@@ -7,10 +7,10 @@
 // des limites : continuité pour les suites monotones, et inégalité de Fatou
 // pour les ensembles.
 
-import { chiffresEntiers, latexNombre, latexNombreFixe, latexPositifFixe } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
+import { chiffresEntiers, latexNombre, latexNombreFixe, latexPositifFixe } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile, verdict } from './commun.js';
 
 export const N_LIGNES = 15;
 
@@ -178,7 +178,7 @@ export default {
     bloc.className = 'bloc-maths';
     cM.appendChild(bloc);
     const lignes = [0, 1, 2].map(() => paragraphe(bloc, '', ''));
-    const verdict = paragraphe(cM, '', 'verdict');
+    const texteVerdict = verdict(cM, '');
 
     glisse(canvasA, repA, {
       deplace: (x) => {
@@ -302,8 +302,8 @@ export default {
         machine: ['', '$\\lambda(A_n) \\to 0$, mais $\\limsup_n A_n = [0, 1]$ : la limite supérieure peut être grosse quand les mesures tendent vers $0$. L’inégalité de Fatou ne porte que sur la limite inférieure.'],
       };
       const [classe, texte] = textes[n];
-      verdict.className = `verdict ${classe}`;
-      outils.rendTexte(verdict, texte);
+      texteVerdict.className = `verdict ${classe}`;
+      outils.rendTexte(texteVerdict, texte);
     }
 
     outils.surTheme(dessine);

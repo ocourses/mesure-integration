@@ -11,12 +11,12 @@
 //   - sup : {sup_n f_n ≤ a} = ⋂_n {f_n ≤ a} (Proposition 2.2.6) ;
 //   - comparaison : {f₁ < f₂} = ⋃_q {f₁ < q} ∩ {q < f₂}, sur les q de pas 1/N.
 
-import { latexIntervalle, latexNombre, latexPositifFixe } from '../ui/format.js';
-import { fermeInfobulle } from '../ui/infobulle.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
+import { latexIntervalle, latexNombre, latexPositifFixe } from '../../socle/js/ui/format.js';
+import { fermeInfobulle } from '../../socle/js/ui/infobulle.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile, verdict } from './commun.js';
 import { intervallesOu, longueur, traceFonction } from './fonctions.js';
 
 export const X_MAX = 6;
@@ -163,7 +163,7 @@ export default {
     bloc.className = 'bloc-maths';
     cL.appendChild(bloc);
     const lignes = [0, 1].map(() => paragraphe(bloc, '', ''));
-    const verdict = paragraphe(cL, '', 'verdict');
+    const texteVerdict = verdict(cL, '');
     const cJ = document.createElement('div');
     cL.appendChild(cJ);
     const justification = [0, 1].map(() => paragraphe(cJ, '', 'note'));
@@ -261,8 +261,8 @@ export default {
           `$\\{f \\ge c\\} = ${latexIntervalles(sup_c)}$ et $\\{f \\le d\\} = ${latexIntervalles(inf_d)}$.`,
           '',
         ]);
-        verdict.className = 'verdict ok';
-        outils.rendTexte(verdict, 'Les bords des intervalles sont les points où le graphe traverse $y = c$ ou $y = d$ : comme $f$ est continue, $f^{-1}([c, d])$ est un fermé, donc un borélien.');
+        texteVerdict.className = 'verdict ok';
+        outils.rendTexte(texteVerdict, 'Les bords des intervalles sont les points où le graphe traverse $y = c$ ou $y = d$ : comme $f$ est continue, $f^{-1}([c, d])$ est un fermé, donc un borélien.');
         ecrisJustification([
           '$[c, d] = [c, +\\infty\\mathclose{[} \\cap \\mathopen{]}-\\infty, d]$, et l’image réciproque commute avec l’intersection (formules de Hausdorff) : $x \\in f^{-1}([c, d]) \\iff f(x) \\ge c$ et $f(x) \\le d$.',
           'Chaque passage du graphe dans la bande donne un intervalle : il y en a autant que de traversées de la bande.',
@@ -286,8 +286,8 @@ export default {
           ferme ? `La demi-droite est fermée : $f(${latexNombre(bord, 3)}) = ${latexNombre(croissante(bord), 3)} \\le a$.` : `La demi-droite est ouverte : $a$ est dans le saut, $f(x) \\le a$ pour $x < 2$, mais $f(2) = 2 > a$.`,
           '',
         ]);
-        verdict.className = 'verdict ok';
-        outils.rendTexte(verdict, 'Dans tous les cas, $\\{f \\le a\\}$ est un borélien : $f$ est borélienne, sans être continue.');
+        texteVerdict.className = 'verdict ok';
+        outils.rendTexte(texteVerdict, 'Dans tous les cas, $\\{f \\le a\\}$ est un borélien : $f$ est borélienne, sans être continue.');
         ecrisJustification([
           'Si $y \\in \\{f \\le a\\}$ et $x \\le y$, alors $f(x) \\le f(y) \\le a$ : l’ensemble contient tout ce qui est à gauche de ses points. C’est donc $\\emptyset$, $\\mathbb R$, ou une demi-droite $\\mathopen{]}-\\infty, c\\mathclose{[}$ ou $\\mathopen{]}-\\infty, c]$ (Exemple 2.2.4).',
           'Les demi-droites $\\mathopen{]}-\\infty, a]$ engendrent $\\mathcal B(\\mathbb R)$ : contrôler les $\\{f \\le a\\}$ suffit (Proposition 2.2.3).',
@@ -308,8 +308,8 @@ export default {
           `C’est l’intersection des quatre lignes du dessus ; son complémentaire est la réunion des $\\{f_n > a\\}$.`,
           '',
         ]);
-        verdict.className = 'verdict ok';
-        outils.rendTexte(verdict, 'Chaque $\\{f_n \\le a\\}$ est un borélien, et une intersection dénombrable de boréliens en est un : $\\sup_n f_n$ est mesurable.');
+        texteVerdict.className = 'verdict ok';
+        outils.rendTexte(texteVerdict, 'Chaque $\\{f_n \\le a\\}$ est un borélien, et une intersection dénombrable de boréliens en est un : $\\sup_n f_n$ est mesurable.');
         ecrisJustification([
           '$\\sup_n f_n(x) \\le a \\iff$ pour tout $n$, $f_n(x) \\le a \\iff x \\in \\bigcap_n \\{f_n \\le a\\}$ : c’est la preuve du point i) de la Proposition 2.2.6.',
           'Le graphe en tirets est $\\sup_n f_n$ : il passe sous $a$ exactement là où toutes les bosses y passent.',
@@ -337,9 +337,9 @@ export default {
           `Réunion sur les $q$ de pas $1/${N}$ : longueur $${nb(longueur(grilleQ))}$, contre $${nb(longueur(vrai))}$ pour $\\{f_1 < f_2\\}$.`,
           '',
         ]);
-        verdict.className = `verdict ${manque > 1e-3 ? '' : 'ok'}`;
+        texteVerdict.className = `verdict ${manque > 1e-3 ? '' : 'ok'}`;
         outils.rendTexte(
-          verdict,
+          texteVerdict,
           manque > 1e-3
             ? `Il manque une longueur $${nb(manque)}$ : les points où aucun $q$ de la grille ne se glisse entre $f_1(x)$ et $f_2(x)$, près des croisements.`
             : 'À cette précision, la réunion remplit $\\{f_1 < f_2\\}$.',
