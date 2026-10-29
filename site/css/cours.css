@@ -1,0 +1,70 @@
+/* Ce que le cours ajoute au socle (socle/css/style.css), calculé à la migration
+   par socle/scripts/residu-css.py. */
+
+/* ---- Mesure et intégration ------------------------------------------------
+   Compléments propres à ce site ; le reste de la feuille vient du site
+   d'automatique, sans les règles du simulateur, qui ne servent pas ici. */
+
+/* Un champ et ses options (case « animer ») sur une même ligne. */
+.champs-ligne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 1.2em;
+  font-family: var(--police-ui);
+  font-size: 0.85rem;
+}
+
+.champs-ligne > .champ {
+  margin: 0.2em 0;
+}
+
+/* Liste d'énoncés à choisir dans une carte (formules ensemblistes) : un énoncé
+   par ligne, pour qu'on les lise comme une liste. */
+.choix.enonces {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.3em;
+  margin-bottom: 0.6em;
+}
+
+.choix.enonces label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.15em 0.4em;
+  border-radius: var(--rayon-controle);
+}
+
+.choix.enonces label:hover {
+  background: var(--fond-survol);
+}
+
+/* Bouton d'action sous un verdict (« Chercher un contre-exemple »). */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-top: 0.3em;
+}
+
+.actions button {
+  font-family: var(--police-ui);
+  font-size: 0.85rem;
+}
+
+/* Choix de l'échelle des suites du bas (linéaire ou logarithmique). */
+.choix-echelle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3em 1em;
+  margin-left: auto;
+}
+
+.etiquette-echelle {
+  font-family: var(--police-ui);
+  font-size: 0.9rem;
+  color: var(--discret);
+}
+

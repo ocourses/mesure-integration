@@ -6,11 +6,11 @@
 // fonctions f et g : pour p < 1, la boule n'est plus convexe et l'inégalité
 // triangulaire tombe, comme pour f = 𝟙_{[0, 1/2]} et g = 𝟙_{]1/2, 1]} du poly.
 
-import { latexNombreFixe, latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { boutonInfo, carte, glisse, paragraphe, toile } from './commun.js';
+import { latexNombreFixe, latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { boutonInfo, carte, glisse, toile, verdict } from './commun.js';
 
 // ‖h‖_p de la fonction en escalier de valeurs (x, y) ; p = Infinity donne le max.
 export function norme([x, y], p) {
@@ -84,7 +84,7 @@ export default {
     });
     const canvasI = toile(cI, '16 / 5', () => dessine());
     const repI = new Repere(canvasI, { x: [0, 3], y: [0, 2], marges: { gauche: 110, bas: 22, haut: 8, droite: 12 } });
-    const verdict = paragraphe(cI, '', 'verdict');
+    const texteVerdict = verdict(cI, '');
 
     // ---- La boule unité ------------------------------------------------------------------
     const cB = carte(colonnes, 'La boule unité $\\{\\|h\\|_p \\le 1\\}$');
@@ -98,7 +98,7 @@ export default {
     const canvasB = toile(cB, '1 / 1', () => dessine());
     canvasB.classList.add('saisissable');
     const repB = new Repere(canvasB, { x: [-2.2, 2.2], y: [-2.2, 2.2], egal: true });
-    const texteB = paragraphe(cB, '', 'verdict');
+    const texteB = verdict(cB, '');
 
     let saisi = null;
     glisse(canvasB, repB, {
@@ -193,9 +193,9 @@ export default {
         repI.trace([[nf + ng, 0], [nf + ng, 2]], { couleur: col.discret, largeur: 1, tirets: [3, 3] });
       }
       const d = defaut(f, g, p);
-      verdict.className = `verdict ${d > 1e-12 ? 'alerte' : 'ok'}`;
+      texteVerdict.className = `verdict ${d > 1e-12 ? 'alerte' : 'ok'}`;
       outils.rendTexte(
-        verdict,
+        texteVerdict,
         `$\\|f\\|_p + \\|g\\|_p = ${nb(nf + ng)}$, $\\|f + g\\|_p = ${nb(ns)}$ : ${d > 1e-12 ? 'l’inégalité triangulaire est fausse' : 'l’inégalité triangulaire est vérifiée'} (écart $${latexNombreFixe(-d, 3)}$).`,
       );
     }

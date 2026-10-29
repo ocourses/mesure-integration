@@ -7,9 +7,9 @@
 // échouent dès que f n'est pas injective ou pas surjective, et la page cherche
 // le plus petit contre-exemple pour l'application dessinée.
 
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { barreOutils, boutonInfo, carte, choixRadios, paragraphe, toile } from './commun.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { barreOutils, boutonInfo, carte, choixRadios, paragraphe, toile, verdict } from './commun.js';
 import {
   anneau,
   cardinal,
@@ -276,7 +276,7 @@ export default {
     bloc.className = 'bloc-maths';
     cT.appendChild(bloc);
     const lignes = [0, 1, 2, 3].map(() => paragraphe(bloc, '', ''));
-    const verdict = paragraphe(cT, '', 'verdict');
+    const texteVerdict = verdict(cT, '');
     const actions = document.createElement('div');
     actions.className = 'actions';
     const bouton = document.createElement('button');
@@ -405,9 +405,9 @@ export default {
           `${proprietes} : ${inj && sur ? 'ici $f^{-1}(B)$ est aussi l’image de $B$ par la bijection réciproque.' : 'il n’y a pas d’application réciproque $f^{-1}$, et pourtant $f^{-1}(B)$ a un sens pour toute partie $B$.'}`,
         ]);
         const sans = fibres.filter((y) => !g.includes(y));
-        verdict.className = 'verdict';
+        texteVerdict.className = 'verdict';
         outils.rendTexte(
-          verdict,
+          texteVerdict,
           sans.length
             ? `$${sans.map(n2).join(', ')}$ n’${sans.length > 1 ? 'ont' : 'a'} pas d’antécédent : ${sans.length > 1 ? 'ils ne contribuent' : 'il ne contribue'} à rien, et $f(f^{-1}(B)) = ${p2(image(g, calcule.gauche))} \\ne B$.`
             : `Chaque point de $B$ a un antécédent : $f(f^{-1}(B)) = B$.`,
@@ -421,9 +421,9 @@ export default {
           `${proprietes}.`,
         ]);
         const intrus = indices(retour & ~A, N1);
-        verdict.className = 'verdict';
+        texteVerdict.className = 'verdict';
         outils.rendTexte(
-          verdict,
+          texteVerdict,
           intrus.length
             ? ENONCES.fmoinsf.explique(g, { P: A }, intrus[0]) + (intrus.length > 1 ? ` De même pour $${intrus.slice(1).map(n1).join(', ')}$.` : '')
             : `Aucun point hors de $A$ n’a la même image qu’un point de $A$ : $f^{-1}(f(A)) = A$.`,
@@ -442,13 +442,13 @@ export default {
         const egal = calcule.gauche === calcule.droite;
         const general = !e.condition || conditionVraie(e.condition, g);
         // Une égalité qui ne vaut que pour ces parties reste un verdict neutre.
-        verdict.className = `verdict ${egal ? (general ? 'ok' : '') : 'alerte'}`;
+        texteVerdict.className = `verdict ${egal ? (general ? 'ok' : '') : 'alerte'}`;
         if (message) {
-          verdict.className = 'verdict ok';
-          outils.rendTexte(verdict, message.texte);
+          texteVerdict.className = 'verdict ok';
+          outils.rendTexte(texteVerdict, message.texte);
         } else if (egal) {
           outils.rendTexte(
-            verdict,
+            texteVerdict,
             general
               ? `Égalité, et pour toutes les parties : ${e.condition ? `$f$ est ${e.condition}.` : 'c’est une formule vraie pour toute application.'}`
               : `Égalité pour ces parties, mais pas pour toutes : $f$ n’est pas ${e.condition}. Cherchez un contre-exemple.`,
@@ -456,7 +456,7 @@ export default {
         } else {
           const n = calcule.espace === 1 ? N1 : N2;
           const temoin = indices(calcule.gauche ^ calcule.droite, n)[0];
-          outils.rendTexte(verdict, `Les deux membres diffèrent. ${e.explique(g, { P: choisis.P, Q: choisis.Q }, temoin)}`);
+          outils.rendTexte(texteVerdict, `Les deux membres diffèrent. ${e.explique(g, { P: choisis.P, Q: choisis.Q }, temoin)}`);
         }
       }
     }

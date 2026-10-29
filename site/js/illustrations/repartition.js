@@ -4,11 +4,11 @@
 // intervalle ]u, v] et l'on lit la fonction t ↦ μ(]−∞, t]) : ses sauts sont
 // les masses de Dirac, elle est continue à droite, pas à gauche.
 
-import { latexNombre as tex, latexPositifFixe as nb, separateur } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
+import { latexNombre as tex, latexPositifFixe as nb, separateur } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, toile, verdict } from './commun.js';
 import { aire, traceFonction } from './fonctions.js';
 
 export const BORNES = [-3, 5];
@@ -146,7 +146,7 @@ export default {
     const canvasM = toile(cM, '16 / 5', () => dessine());
     canvasM.classList.add('cliquable');
     const repM = new Repere(canvasM, { x: BORNES, y: [0, 1.2] });
-    const mesureA = paragraphe(cM, '', 'verdict');
+    const mesureA = verdict(cM, '');
 
     // ---- Fonction de répartition -------------------------------------------------------------
     const cF = carte(zone, 'La fonction $F(t) = \\mu(\\mathopen{]}-\\infty, t])$');
@@ -158,7 +158,7 @@ export default {
     const canvasF = toile(cF, '16 / 5', () => dessine());
     canvasF.classList.add('saisissable');
     const repF = new Repere(canvasF, { x: BORNES, y: [0, 1.2] });
-    const continuite = paragraphe(cF, '', 'verdict');
+    const continuite = verdict(cF, '');
 
     // ---- Interactions --------------------------------------------------------------------------
     let saisie = null; // { genre: 'atome', indice } ou { genre: 'borne', cle }

@@ -4,11 +4,11 @@
 // croît vers f ; son intégrale croît vers celle de f, finie ou non. On règle n,
 // on clique un point x, et l'on suit n ↦ f_n(x) et n ↦ ∫ f_n.
 
-import { chiffresEntiers, latexNombreFixe, latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { axesLog, barreOutils, boutonInfo, carte, choisitIndice, choixEchelle, choixRadios, echelleLog, glisse, paragraphe, toile } from './commun.js';
+import { chiffresEntiers, latexNombreFixe, latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { axesLog, barreOutils, boutonInfo, carte, choisitIndice, choixEchelle, choixRadios, echelleLog, glisse, toile, verdict } from './commun.js';
 import { traceFonction } from './fonctions.js';
 
 const N_MAX = 8;
@@ -167,7 +167,7 @@ export default {
     const canvasG = toile(cG, '16 / 6', () => dessine());
     canvasG.classList.add('cliquable');
     const repG = new Repere(canvasG, { x: [0, 1], y: [0, 9] });
-    const ecart = paragraphe(cG, '', 'verdict');
+    const ecart = verdict(cG, '');
 
     // ---- Suites numériques ----------------------------------------------------------------
     const grille = document.createElement('div');
@@ -181,7 +181,7 @@ export default {
     ]);
     const canvasX = toile(cX, '16 / 7', () => dessine());
     const repX = new Repere(canvasX, { x: [-0.5, N_MAX + 0.5], y: [0, 9] });
-    const texteX = paragraphe(cX, '', 'verdict');
+    const texteX = verdict(cX, '');
     const cI = carte(grille, 'Beppo-Levi : $n \\mapsto \\int f_n$');
     const titreI = cI.querySelector('h2');
     boutonInfo(cI, [
@@ -190,7 +190,7 @@ export default {
     ]);
     const canvasI = toile(cI, '16 / 7', () => dessine());
     const repI = new Repere(canvasI, { x: [-0.5, N_MAX + 0.5], y: [0, 9] });
-    const texteI = paragraphe(cI, '', 'verdict');
+    const texteI = verdict(cI, '');
 
     for (const [canvas, rep] of [[canvasX, repX], [canvasI, repI]]) {
       choisitIndice(canvas, rep, {

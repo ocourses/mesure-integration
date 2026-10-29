@@ -10,9 +10,9 @@
 // comparée à la famille f(𝒜₁) ; et la mesurabilité vérifiée sur des
 // générateurs de 𝒜₂, par les « bons ensembles » {B : f⁻¹(B) ∈ 𝒜₁}.
 
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { barreOutils, boutonInfo, carte, choixRadios, paragraphe, toile } from './commun.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { barreOutils, boutonInfo, carte, choixRadios, paragraphe, toile, verdict } from './commun.js';
 import {
   anneau,
   atomes,
@@ -144,7 +144,7 @@ export default {
     bloc.className = 'bloc-maths';
     cT.appendChild(bloc);
     const lignes = [0, 1, 2, 3].map(() => paragraphe(bloc, '', ''));
-    const verdict = paragraphe(cT, '', 'verdict');
+    const texteVerdict = verdict(cT, '');
 
     // Le bloc du point j, dit par son contenu (les numéros peuvent se renuméroter).
     const dit = (et, j, nom, p) => {
@@ -243,10 +243,10 @@ export default {
           `$f^{-1}(\\mathcal A_2)$ a pour atomes les images réciproques des blocs de $\\mathcal A_2$ : ${liste(pre, p1)}. C’est la plus petite tribu sur $E_1$ qui rend $f$ mesurable.`,
           '$f$ est mesurable si et seulement si $f^{-1}(\\mathcal A_2) \\subset \\mathcal A_1$ : chaque atome de $f^{-1}(\\mathcal A_2)$ doit être une réunion de blocs de $\\mathcal A_1$.',
         ]);
-        verdict.className = `verdict ${defauts.length ? 'alerte' : 'ok'}`;
+        texteVerdict.className = `verdict ${defauts.length ? 'alerte' : 'ok'}`;
         const d = defauts[0];
         outils.rendTexte(
-          verdict,
+          texteVerdict,
           d
             ? `$f$ n’est pas mesurable : $f^{-1}(${p2(d.B)}) = ${p1(d.pre)}$ coupe le bloc $${p1(d.coupes[0])}$ de $\\mathcal A_1$ sans le contenir.`
             : '$f$ est mesurable : les flèches d’un même bloc de $\\mathcal A_1$ arrivent toutes dans un même bloc de $\\mathcal A_2$.',
@@ -262,9 +262,9 @@ export default {
           `$f(\\mathcal A_1) = \\{f(A) : A \\in \\mathcal A_1\\}$ : ${famille.length} parties, ${liste(famille.slice(0, 8), p2)}${famille.length > 8 ? '…' : ''}.`,
           sans.length ? `$${sans.map((y) => `f^{-1}(\\{${NOMS_2[y]}\\})`).join(' = ')} = \\emptyset \\in \\mathcal A_1$ : ${sans.length > 1 ? 'ces singletons sont' : 'ce singleton est'} dans la tribu image.` : '',
         ]);
-        verdict.className = `verdict ${test.tribu ? '' : 'alerte'}`;
+        texteVerdict.className = `verdict ${test.tribu ? '' : 'alerte'}`;
         outils.rendTexte(
-          verdict,
+          texteVerdict,
           test.tribu
             ? 'Ici $f(\\mathcal A_1)$ est une tribu, mais ce n’est pas vrai en général (Remarque 2.1.5).'
             : test.axiome === 'plein'
@@ -281,9 +281,9 @@ export default {
           'Les bons ensembles $\\mathcal G = \\{B \\subset E_2 : f^{-1}(B) \\in \\mathcal A_1\\}$ forment une tribu, la tribu image. Si $\\mathcal C \\subset \\mathcal G$, alors $\\sigma(\\mathcal C) \\subset \\mathcal G$ : il suffit de vérifier les générateurs.',
         ]);
         const mauvais = tests.find((t) => !t.bon);
-        verdict.className = `verdict ${!C.length ? '' : mauvais ? 'alerte' : 'ok'}`;
+        texteVerdict.className = `verdict ${!C.length ? '' : mauvais ? 'alerte' : 'ok'}`;
         outils.rendTexte(
-          verdict,
+          texteVerdict,
           !C.length
             ? '$\\sigma(\\emptyset) = \\{\\emptyset, E_2\\}$ : toute application est mesurable pour la tribu grossière.'
             : mauvais

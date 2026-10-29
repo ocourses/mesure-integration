@@ -5,11 +5,11 @@
 // bande montre l'ensemble A_k = f⁻¹([y_k, y_{k+1}[), qui peut être une réunion
 // de plusieurs intervalles, et sa contribution y_k λ(A_k) à l'intégrale.
 
-import { chiffresEntiers, latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
+import { chiffresEntiers, latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
 import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
-import { champ } from '../ui/controls.js';
+import { champ } from '../../socle/js/ui/controls.js';
 import { aire, integrale, intervallesOu, longueur, paliers, rectangles, traceFonction } from './fonctions.js';
 
 // ---- Fonctions ------------------------------------------------------------------------

@@ -5,11 +5,11 @@
 // ρ̄ dρ dθ (ρ̄ = ρ₀ + dρ/2) : le jacobien mesure la dilatation des aires. On en
 // tire l'intégrale de Gauss.
 
-import { latexPositifFixe as nb, separateur } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { boutonInfo, carte, glisse, paragraphe, toile } from './commun.js';
+import { latexPositifFixe as nb, separateur } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { boutonInfo, carte, glisse, paragraphe, toile, verdict } from './commun.js';
 import { aire, traceFonction } from './fonctions.js';
 
 export const R_MAX = 2.5;
@@ -81,7 +81,7 @@ export default {
     const canvasU = toile(cU, '1 / 1', () => dessine());
     canvasU.classList.add('cliquable');
     const repU = new Repere(canvasU, { x: [0, R_MAX + 0.1], y: [0, DEMI_PI + 0.1], egal: true });
-    const texteU = paragraphe(cU, '', 'verdict');
+    const texteU = verdict(cU, '');
 
     const cV = carte(grille, 'Son image par $\\phi$, dans le plan $(x, y)$');
     boutonInfo(cV, [
@@ -92,7 +92,7 @@ export default {
     const canvasV = toile(cV, '1 / 1', () => dessine());
     canvasV.classList.add('cliquable');
     const repV = new Repere(canvasV, { x: [0, R_MAX + 0.1], y: [0, R_MAX + 0.1], egal: true });
-    const texteV = paragraphe(cV, '', 'verdict');
+    const texteV = verdict(cV, '');
 
     const cG = carte(zone, 'L’intégrale de Gauss : $\\rho \\mapsto \\rho\\,e^{-\\rho^2}$');
     const canvasG = toile(cG, '16 / 3', () => dessine());

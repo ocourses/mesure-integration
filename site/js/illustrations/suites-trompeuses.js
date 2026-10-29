@@ -3,15 +3,15 @@
 // On règle n, on clique un point x du graphe, et l'on suit les deux suites
 // numériques n ↦ f_n(x) et n ↦ ∫ f_n, face à f(x) et à ∫ f pour la limite f.
 
-import { chiffresEntiers, latexPositifFixe as nb } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { champ } from '../ui/controls.js';
-import { axesLog, barreOutils, boutonInfo, carte, choisitIndice, choixEchelle, choixRadios, echelleLog, glisse, paragraphe, toile } from './commun.js';
+import { chiffresEntiers, latexPositifFixe as nb } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { champ } from '../../socle/js/ui/controls.js';
+import { axesLog, barreOutils, boutonInfo, carte, choisitIndice, choixEchelle, choixRadios, echelleLog, glisse, paragraphe, toile, verdict } from './commun.js';
 import { aire, grilleUnites, traceFonction } from './fonctions.js';
 import { GLOSSAIRE } from './glossaire.js';
-import { fermeInfobulle, souligne } from '../ui/infobulle.js';
-import { rendTexte } from '../ui/katex.js';
+import { fermeInfobulle, souligne } from '../../socle/js/ui/infobulle.js';
+import { rendTexte } from '../../socle/js/ui/katex.js';
 
 // Énumération q_1, q_2, … de ℚ ∩ [0, 1] : 0, 1, puis les fractions
 // irréductibles p/q rangées par dénominateur, puis par numérateur.
@@ -245,7 +245,7 @@ export default {
     ]);
     const canvasX = toile(cX, '16 / 7', () => dessine());
     const repX = new Repere(canvasX, { x: [0, 41], y: [0, 4] });
-    const valeurX = paragraphe(cX, '', 'verdict');
+    const valeurX = verdict(cX, '');
 
     const cI = carte(grille, 'La suite $n \\mapsto \\int f_n$');
     const titreI = cI.querySelector('h2');
@@ -255,7 +255,7 @@ export default {
     ]);
     const canvasI = toile(cI, '16 / 7', () => dessine());
     const repI = new Repere(canvasI, { x: [0, 41], y: [0, 2.5] });
-    const verdict = paragraphe(cI, '', 'verdict');
+    const texteVerdict = verdict(cI, '');
 
     // Un clic (ou un glisser) sur une figure du bas choisit n, comme le curseur.
     for (const [canvas, rep] of [[canvasX, repX], [canvasI, repI]]) {
@@ -391,9 +391,9 @@ export default {
       outils.rendTexte(titreI, ecart ? 'L’écart $n \\mapsto |\\int f_n - \\int f|$, échelle logarithmique' : 'La suite $n \\mapsto \\int f_n$');
       const limI = S.integrale(1e9);
       const egal = Math.abs(limI - S.integraleLimite) < 1e-6;
-      verdict.className = `verdict ${egal ? 'ok' : 'alerte'}`;
+      texteVerdict.className = `verdict ${egal ? 'ok' : 'alerte'}`;
       outils.rendTexte(
-        verdict,
+        texteVerdict,
         `$\\int f_n = ${S.latexIntegrale} \\to ${nb(limI, 0, 1)}$ ${egal ? '$=$' : '$\\ne$'} $\\int f = ${nb(S.integraleLimite, 0, 1)}$`,
       );
     }

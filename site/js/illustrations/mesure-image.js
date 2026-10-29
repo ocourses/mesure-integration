@@ -6,10 +6,10 @@
 // former B, et X⁻¹(B) s'allume dans la grille des issues, réunion des fibres
 // {X = k}. Un clic sur une issue ajoute ou retire toute sa fibre.
 
-import { latexNombre } from '../ui/format.js';
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile } from './commun.js';
+import { latexNombre } from '../../socle/js/ui/format.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { barreOutils, boutonInfo, carte, choixRadios, glisse, paragraphe, toile, verdict } from './commun.js';
 
 export const ISSUES = Array.from({ length: 36 }, (_, k) => [Math.floor(k / 6) + 1, (k % 6) + 1]);
 
@@ -123,7 +123,7 @@ export default {
     bloc.className = 'bloc-maths';
     cL.appendChild(bloc);
     const lignes = [0, 1, 2].map(() => paragraphe(bloc, '', ''));
-    const verdict = paragraphe(cL, '', 'verdict');
+    const texteVerdict = verdict(cL, '');
 
     // Case de l'issue (i, j), centrée en (i, j) : colonne i (dé 1), ligne j
     // (dé 2, de bas en haut).
@@ -232,9 +232,9 @@ export default {
         ),
       );
       const tout = V.valeurs.every((v) => !L.get(v) || B.includes(v));
-      verdict.className = `verdict ${tout && B.length ? 'ok' : ''}`;
+      texteVerdict.className = `verdict ${tout && B.length ? 'ok' : ''}`;
       outils.rendTexte(
-        verdict,
+        texteVerdict,
         tout && B.length
           ? '$B$ contient toutes les valeurs prises : $X^{-1}(B) = \\Omega$, et $P_X(B) = P(\\Omega) = 1$. La loi est une probabilité.'
           : n === 'indicatrice'

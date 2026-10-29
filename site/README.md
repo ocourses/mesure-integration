@@ -6,12 +6,14 @@ et le fait manipuler. On choisit une fonction, un paramètre, une mesure, un
 point, en cliquant ou en faisant glisser sur la figure, et l'on regarde ce que
 deviennent les ensembles et les intégrales.
 
-Le site reprend le gabarit, la feuille de style et les briques communes du site
-du cours d'automatique (`ocourses/automatique-enseignants`, dossier `site/`),
-et ses conventions ([`CONVENTIONS.md`](CONVENTIONS.md)). La feuille de style a
-été élaguée des règles du simulateur (console, journal, schéma de la boucle,
-feuilles mobiles) : une brique reprise plus tard du site d'automatique peut
-demander de recopier aussi ses règles.
+Le site est construit sur le socle commun des sites de cours,
+[`ocots-site`](https://github.com/ocourses/ocots-site), en sous-module dans
+`socle/` et épinglé sur un tag : gabarits, feuille de style, briques, moteur du
+glossaire et CI viennent de lui. Le cours n'écrit que ce qui le distingue :
+`site.config.js`, ses illustrations, son catalogue, son glossaire et
+`css/cours.css`. Les conventions sont celles de
+[`site.md`](https://github.com/ocourses/ocots-conventions/blob/main/site.md),
+plus les arbitrages du cours ([`CONVENTIONS.md`](CONVENTIONS.md)).
 
 ## Un site pour explorer le cours
 
@@ -39,9 +41,10 @@ Aucune étape de construction : le site est fait de modules JavaScript servis
 tels quels. KaTeX est chargé depuis un CDN.
 
 ```bash
+git submodule update --init   # une fois après le clone : le socle (site/socle/)
 cd site
 npm run serve        # http://localhost:8000/ (sans cache)
-npm test             # tests des fonctions mathématiques, sous Node
+npm test             # tests du cours et du socle, sous Node
 ```
 
 Le relevé des essais clique chaque « Essayer » et écrit, sous le texte de
@@ -72,21 +75,23 @@ Un module `js/illustrations/<id>.js` exporte par défaut
 - `essais` : `{ texte, etat?, preferences? }` ; avec `etat`, un bouton
   « Essayer » applique ce réglage ;
 - `preferences` : les préférences d'affichage par défaut, gardées dans le
-  navigateur (clé `mesure.illustration.<id>`) ;
+  navigateur (clé `mesure-integration.illustration.<id>`) ;
 - `termes` : les termes du glossaire employés par la page ; leur première
   occurrence est soulignée, avec la définition du poly en infobulle ;
 - `choix` : les valeurs permises des réglages textuels ;
 - `monte(zone, outils)` construit l'illustration dans `zone` et renvoie
   `{ applique() }`, appelé après un « Essayer ».
 
-Les briques communes sont dans `js/illustrations/commun.js` (cartes, canevas,
-légendes en bulle, choix par boutons radio, glisser à la souris, zoom),
+Les briques communes viennent du socle par `js/illustrations/commun.js`
+(cartes, canevas, légendes en bulle, choix par boutons radio, glisser à la
+souris, zoom), qui garde aussi ce qui n'appartient qu'au cours (indice choisi
+sur une figure, échelle logarithmique) ;
 `js/illustrations/fonctions.js` (intégrales numériques, graphe avec sauts,
 aire, fonctions en escalier, ensembles de niveau),
 `js/illustrations/ensembles.js` (ensembles finis : parties, images directes
 et réciproques, tribus, et diagrammes sagittaux dont on glisse les
-flèches), `js/ui/controls.js`
-(champs : curseur, boîte de nombre à flèches ▲ ▼, saisie), `js/ui/repere.js`
+flèches), `socle/js/ui/controls.js`
+(champs : curseur, boîte de nombre à flèches ▲ ▼, saisie), `socle/js/ui/repere.js`
 (repère 2D) et `js/illustrations/glossaire.js` (définitions du poly). On
 déclare enfin l'illustration dans `js/illustrations/catalogue.js`. Les
 fonctions mathématiques de chaque module sont exportées et testées sous Node
@@ -100,6 +105,8 @@ Le site est copié dans le dépôt étudiant
 <https://ocourses.github.io/mesure-integration/>. La copie se fait **par PR**,
 avec `scripts/publier-etudiant` : `site/` y est déclaré en **miroir** dans
 `publication.toml`, donc un fichier supprimé ou renommé ici disparaît aussi
-là-bas. Ne jamais modifier le dossier côté étudiant à la main. Le workflow
-`etudiant/.github/workflows/site.yml`, publié avec le site, lance `npm test`
-puis déploie le dossier à chaque fusion sur `main` qui touche `site/`.
+là-bas. Les fichiers du socle y sont copiés (`ocots-publication` ≥ v1.2.0),
+sans ses outils ni sa documentation. Ne jamais modifier le dossier côté
+étudiant à la main. Le workflow `etudiant/.github/workflows/site.yml`, publié
+avec le site, appelle celui du socle (épinglé sur le même tag) : `npm test`,
+puis déploiement à chaque fusion sur `main` qui touche `site/`.

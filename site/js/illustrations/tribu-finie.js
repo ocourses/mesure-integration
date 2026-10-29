@@ -6,10 +6,10 @@
 // fait glisser les valeurs, est mesurable si et seulement si elle est
 // constante sur chaque atome.
 
-import { Repere } from '../ui/repere.js';
-import { couleurs } from '../ui/theme.js';
-import { fermeInfobulle } from '../ui/infobulle.js';
-import { boutonInfo, carte, glisse, paragraphe, toile } from './commun.js';
+import { Repere } from '../../socle/js/ui/repere.js';
+import { couleurs } from '../../socle/js/ui/theme.js';
+import { fermeInfobulle } from '../../socle/js/ui/infobulle.js';
+import { boutonInfo, carte, glisse, paragraphe, toile, verdict } from './commun.js';
 
 export const TAILLE = 8;
 export const F_DEFAUT = '1,1,2.5,2.5,2.5,0.5,0.5,3';
@@ -120,7 +120,7 @@ export default {
     const canvasF = toile(cF, '16 / 5', () => dessine());
     canvasF.classList.add('saisissable');
     const repF = new Repere(canvasF, { x: [-1.4, TAILLE + 0.6], y: [-0.7, F_MAX + 0.3], marges: { gauche: 4, bas: 4, haut: 4, droite: 4 } });
-    const verdict = paragraphe(cF, '', 'verdict');
+    const texteVerdict = verdict(cF, '');
 
     // Ligne et colonne des cases : la ligne i (0 en haut) est à la hauteur 4 − i.
     const caseVisee = (x, y) => {
@@ -229,17 +229,17 @@ export default {
         }
         for (const a of fautifs) repF.trace([[a[0] - 0.35, -0.12], [a[a.length - 1] + 0.35, -0.12]], { couleur: col.alerte, largeur: 3 });
       }
-      verdict.className = `verdict ${fautifs.length ? 'alerte' : 'ok'}`;
+      texteVerdict.className = `verdict ${fautifs.length ? 'alerte' : 'ok'}`;
       if (fautifs.length) {
         const a = fautifs[0];
         const valeur = v[a[0] - 1];
         const pre = imagesReciproques(v).find(([w]) => w === valeur)[1];
         outils.rendTexte(
-          verdict,
+          texteVerdict,
           `$f$ n’est pas mesurable : elle n’est pas constante sur l’atome $${ensemble(a)}$, et $f^{-1}(\\{${fr(valeur)}\\}) = ${ensemble(pre)}$ n’est pas une réunion d’atomes.`,
         );
       } else {
-        outils.rendTexte(verdict, `$f$ est mesurable : elle est constante sur chacun des ${k} atomes, donc chaque $f^{-1}(B)$ est une réunion d’atomes.`);
+        outils.rendTexte(texteVerdict, `$f$ est mesurable : elle est constante sur chacun des ${k} atomes, donc chaque $f^{-1}(B)$ est une réunion d’atomes.`);
       }
     }
 
